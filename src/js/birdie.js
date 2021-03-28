@@ -1,5 +1,6 @@
 import ground from './ground'
 import gamecontroller from './gamecontroller'
+import score from './score'
 const birdie = {
   game: null,
   animationStep: 0,
@@ -35,6 +36,8 @@ const birdie = {
     }
     //bordercollision
     this.checkCollisionWithGround()
+    this.checkCollisionWithTubes()
+    this.checkPassedTube()
     //rendu
     this.render()
   },
@@ -69,6 +72,32 @@ const birdie = {
       this.goUp()
     }
   },
+  checkCollisionWithTubes() {
+    this.game.tubesPairs.forEach(tubePair => {
+      if (
+        this.x + this.width / 2 > tubePair.x &&
+        this.x - this.width / 2 < tubePair.x + tubePair.width
+      ) {
+        if (
+          this.y - this.height / 2 < tubePair.yTop + tubePair.height ||
+          this.y + this.height / 2 > tubePair.yBottom
+        )
+          this.game.cancelAnimation()
+      }
+    })
+  },
+
+  checkPassedTube() {
+    this.game.tubesPairs.forEach(tubePair => {
+      if (this.x + this.width / 2 > tubePair.x) {
+        if (!tubePair.passed) {
+          score.addPoint()
+          tubePair.passed = true
+        }
+      }
+    })
+  },
+
   goUp() {
     this.fallSpeed = -this.maxFallSpeed
   },

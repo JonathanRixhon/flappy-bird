@@ -3,6 +3,7 @@ import background from './background'
 import TubePair from './TubePair'
 import ground from './ground'
 import birdie from './birdie'
+import score from './score'
 
 const game = {
   canvas: document.getElementById('game'),
@@ -18,6 +19,9 @@ const game = {
   maxTubesPairs: 3,
   frameCounter: 0,
   frameInterval: 80,
+  requestId: 0,
+  //
+  point: 0,
 
   init() {
     this.context = this.canvas.getContext('2d')
@@ -26,15 +30,29 @@ const game = {
     //écoute de la fin du chargement de l'image
     this.sprite.addEventListener('load', () => {
       background.init(this)
+      score.init(this)
       ground.init(this)
       birdie.init(this)
       gamecontroller.init(this)
       this.animate()
     })
   },
+  restart() {
+    this.tubesPairs = []
+    this.hasStarted = false
+    birdie.fallSpeed = 0
+    this.point = 0
+    //
+    score.update()
+    background.init(this)
+    ground.init(this)
+    birdie.init(this)
+    gamecontroller.init(this)
+    this.animate()
+  },
 
   animate() {
-    window.requestAnimationFrame(() => {
+    this.requestId = window.requestAnimationFrame(() => {
       this.animate()
     })
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -47,10 +65,12 @@ const game = {
         if (this.tubesPairs.length > this.maxTubesPairs) {
           this.tubesPairs.splice(0, 1)
         }
-        console.log(this.tubesPairs)
         this.tubesPairs.push(new TubePair(this))
         this.frameCounter = 0
       }
+      this.tubesPairs.forEach(tubepair => {
+        tubepair.update()
+      })
     }
     ground.update()
     birdie.update()
@@ -68,6 +88,9 @@ const game = {
       coordinates.dw,
       coordinates.dh
     )
+  },
+  cancelAnimation() {
+    window.cancelAnimationFrame(this.requestId)
   },
 }
 

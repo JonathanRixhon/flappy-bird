@@ -1,15 +1,18 @@
-
 body {
   background: url('/resources/bcg.png');
 }
 
-h1 {
+h1,
+h2 {
   font-family: 'Droid Sans', sans-serif;
   letter-spacing: 4px;
   color: turquoise;
   text-align: center;
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
   text-transform: uppercase;
+}
+h2 {
+  color: red;
 }
 
 canvas {
