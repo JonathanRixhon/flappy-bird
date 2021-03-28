@@ -66,8 +66,11 @@ const birdie = {
   checkCollisionWithGround() {
     if (this.y + this.height / 2 > ground.frame.dy) {
       this.y = ground.frame.dy - this.height / 2
-      this.fallSpeed = -this.maxFallSpeed
+      this.goUp()
     }
+  },
+  goUp() {
+    this.fallSpeed = -this.maxFallSpeed
   },
 }
 export default birdie

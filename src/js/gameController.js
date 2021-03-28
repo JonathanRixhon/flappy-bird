@@ -1,3 +1,5 @@
+import birdie from './birdie'
+
 const gamecontroller = {
   init(game) {
     window.addEventListener('keydown', e => {
@@ -5,6 +7,8 @@ const gamecontroller = {
         if (!game.hasStarted) {
           game.hasStarted = true
         }
+        birdie.goUp()
+        //faire monter l'oiseau. (petit coup de pied au derrière de l'oiseau)
       }
     })
   },
